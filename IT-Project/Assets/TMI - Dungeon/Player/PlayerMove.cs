@@ -14,6 +14,9 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float jumpMultiplier;
     [SerializeField] private KeyCode jumpKey;
 
+    [Header("Animations")]
+    [SerializeField] Animation animation_Attack_1;
+
 
     private bool isJumping;
 
@@ -25,6 +28,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         PlayerMovement();
+        Attack1();
     }
 
     private void PlayerMovement()
@@ -37,7 +41,7 @@ public class PlayerMove : MonoBehaviour
 
         charController.SimpleMove(forwardMovement + rightMovement);
 
-        JumpInput();
+        //JumpInput();
 
     }
 
@@ -65,6 +69,16 @@ public class PlayerMove : MonoBehaviour
 
         charController.slopeLimit = 45.0f;
         isJumping = false;
+    }
+
+    void Attack1()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+
+        }
+
+
     }
 
 }
