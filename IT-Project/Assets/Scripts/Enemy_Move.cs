@@ -10,12 +10,18 @@ public class Enemy_Move : MonoBehaviour
     [SerializeField] float Enemy_Damege;
     void Start()
     {
-        
+        Player_pos = GetComponent<Transform>();
+        Position_Self = GetComponent<Transform>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
+    }
+
+    void FindPlayer()
+    {
+
     }
 }
