@@ -10,9 +10,9 @@ public class PlayerMove : MonoBehaviour
 
     private CharacterController charController;
 
-    [SerializeField] private AnimationCurve jumpFallOff;
-    [SerializeField] private float jumpMultiplier;
-    [SerializeField] private KeyCode jumpKey;
+    //[SerializeField] private AnimationCurve jumpFallOff;
+    //[SerializeField] private float jumpMultiplier;
+    //[SerializeField] private KeyCode jumpKey;
 
     [Header("Animations")]
     [SerializeField] Animation animation_Attack_1;
@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         PlayerMovement();
-        Attack1();
+        //Attack1();
     }
 
     private void PlayerMovement()
@@ -45,16 +45,16 @@ public class PlayerMove : MonoBehaviour
 
     }
 
-    private void JumpInput()
+    /*private void JumpInput()
     {
         if(Input.GetKeyDown(jumpKey) && !isJumping)
         {
             isJumping = true;
             StartCoroutine(JumpEvent());
         }
-    }
+    }*/
 
-    private IEnumerator JumpEvent()
+    /*private IEnumerator JumpEvent()
     {
         charController.slopeLimit = 90.0f;
         float timeInAir = 0.0f;
@@ -69,9 +69,9 @@ public class PlayerMove : MonoBehaviour
 
         charController.slopeLimit = 45.0f;
         isJumping = false;
-    }
+    }*/
 
-    void Attack1()
+    /*void Attack1()
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -79,6 +79,6 @@ public class PlayerMove : MonoBehaviour
         }
 
 
-    }
+    }*/
 
 }

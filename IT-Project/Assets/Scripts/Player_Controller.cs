@@ -1,54 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Player_Controller : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    [SerializeField] Rigidbody rb;
+    /*
+     READ ME:
+     Das ist ein test script wo ich an besseren bewegungsoptionen arbeite, weil ich die actuelle nur so semi Finde
+     */
 
-    [SerializeField] float horizontalInput;
-    [SerializeField] float verticalInput;
-    Vector3 movment;
+    [Header("Objecte")]
+    [SerializeField]    CharacterController controller;
+    [SerializeField]    Transform transformCamera;
+    [Header("Werte")]
+    [SerializeField]    float speed = 6f;
+    [SerializeField]    float rotationSpeed = 10f;
+    [SerializeField]    float gravity = -9.81f;
+    [SerializeField]    float yVelocity;
 
-    [SerializeField] Animation animaton_Attack_1;
-
-    //Variabeln die wir später maybe brauchen
-    bool canMove = true;
-    float moveSpeedModifikator = 1f;
-
-
-    void Start()
+    void Update()
     {
-        rb = this.GetComponent<Rigidbody>();
+        Move();
+        ApplyGravity();
     }
 
-    private void FixedUpdate()
+    void Move()
     {
-        MovePlayer();
-        Attack1();
-    }
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
-    void MovePlayer()
-    {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+        if(inputDir.magnitude >= 0.1f)
         {
-            rb.AddForce(horizontalInput * moveSpeed * Time.fixedDeltaTime, 0f, 0f, ForceMode.VelocityChange);
+            Vector3 camForward = transformCamera.forward;
+            Vector3 camRight = transformCamera.right;
+
+            camForward.y = 0f;
+            camRight.y = 0f;
+
+            Vector3 moveDir = camForward * vertical + camRight * horizontal;
+
+            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
-
     }
 
-    void Attack1()
+    void ApplyGravity()
     {
-        if (Input.GetKeyDown(KeyCode.L)) 
-        { 
-            
-        } 
-        
+        if(controller.isGrounded && yVelocity < 0f)
+        {
+            yVelocity = -2f;
+        }
+        yVelocity += gravity * Time.deltaTime;
 
+        controller.Move(Vector3.up * yVelocity * Time.deltaTime);
     }
+
 }
