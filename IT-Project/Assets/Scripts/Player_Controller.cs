@@ -18,9 +18,13 @@ public class Player_Controller : MonoBehaviour
     [Header("Player Stats")]
     [SerializeField] private int playerHealth = 100;
 
+    [Header("UI")]
+    public GameObject deathPanel;
+
     private void Awake()
     {
         charController = GetComponent<CharacterController>();
+        Time.timeScale = 1f;
     }
 
     private void Update()
@@ -62,6 +66,11 @@ public class Player_Controller : MonoBehaviour
             float damageTaken = damageDealer.GetDamage();
             TakeDamage(damageTaken);
         }
+
+        if(playerHealth <= 0f)
+        {
+            Die();
+        }
     }
 
     public void TakeDamage(float damage)
@@ -69,4 +78,35 @@ public class Player_Controller : MonoBehaviour
         playerHealth -= (int)damage;
         Debug.Log("Player Health: " + playerHealth);
     }
+
+    void Die()
+    {
+        Debug.Log("You Died");
+        Time.timeScale = 0f;
+        ShowDeathUI();
+    }
+
+    void ShowDeathUI()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        if(deathPanel != null)
+        {
+            deathPanel.SetActive(true);
+        }
+    }
+
+    //temporär jetzt hier später vielleicht bei der ui oder so
+    private void HideDeathUI()
+    {
+        if (deathPanel != null)
+        {
+            deathPanel.SetActive(false);
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
 }
