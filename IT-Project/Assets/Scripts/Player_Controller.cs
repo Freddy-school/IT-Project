@@ -16,6 +16,12 @@ public class Player_Controller : MonoBehaviour
     [SerializeField]    float gravity = -9.81f;
     [SerializeField]    float yVelocity;
 
+    private void Start()
+    {
+        //temp damit er immer an gleichen ort started
+        transform.position = new Vector3(-7.73999977f, 1.45000005f, 2.26999998f);
+    }
+
     void Update()
     {
         Move();

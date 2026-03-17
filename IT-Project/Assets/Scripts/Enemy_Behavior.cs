@@ -1,23 +1,13 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Enemy_Behavior : MonoBehaviour
 {
-    //Getting Components
-    
-    public GameObject Player_Obj;
-    public NavMeshAgent agent;
+    [SerializeField] GameObject Spawnpoint1;
 
-    private void Update()
+    private void Start()
     {
-        SetWayPoint();
+        
+        transform.position = Spawnpoint1.transform.position;
     }
-
-
-    void SetWayPoint()
-    {
-        Player_Obj.transform.position 
-    }
-
-
 }
