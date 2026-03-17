@@ -2,65 +2,71 @@ using UnityEngine;
 
 public class Player_Controller : MonoBehaviour
 {
-    /*
-     READ ME:
-     Das ist ein test script wo ich an besseren bewegungsoptionen arbeite, weil ich die actuelle nur so semi Finde
-     */
+    [Header("Input")]
+    [SerializeField] private string horizontalInputName = "Horizontal";
+    [SerializeField] private string verticalInputName = "Vertical";
 
-    [Header("Objecte")]
-    [SerializeField]    CharacterController controller;
-    [SerializeField]    Transform transformCamera;
-    [Header("Werte")]
-    [SerializeField]    float speed = 6f;
-    [SerializeField]    float rotationSpeed = 10f;
-    [SerializeField]    float gravity = -9.81f;
-    [SerializeField]    float yVelocity;
+    [Header("Movement")]
+    [SerializeField] private float movementSpeed = 6f;
 
-    private void Start()
+    private CharacterController charController;
+
+    [Header("Gravity")]
+    [SerializeField] private float gravity = -9.81f;
+    private float yVelocity;
+
+    [Header("Player Stats")]
+    [SerializeField] private int playerHealth = 100;
+
+    private void Awake()
     {
-        //temp damit er immer an gleichen ort started
-        transform.position = new Vector3(-7.73999977f, 1.45000005f, 2.26999998f);
+        charController = GetComponent<CharacterController>();
     }
 
-    void Update()
+    private void Update()
     {
-        Move();
+        PlayerMovement();
         ApplyGravity();
     }
 
-    void Move()
+    private void PlayerMovement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizInput = Input.GetAxis(horizontalInputName) * movementSpeed;
+        float vertInput = Input.GetAxis(verticalInputName) * movementSpeed;
 
-        Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
+        Vector3 forwardMovement = transform.forward * vertInput;
+        Vector3 rightMovement = transform.right * horizInput;
 
-        if(inputDir.magnitude >= 0.1f)
-        {
-            Vector3 camForward = transformCamera.forward;
-            Vector3 camRight = transformCamera.right;
 
-            camForward.y = 0f;
-            camRight.y = 0f;
-
-            Vector3 moveDir = camForward * vertical + camRight * horizontal;
-
-            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
-        }
+        charController.Move((forwardMovement + rightMovement) * Time.deltaTime);
     }
 
-    void ApplyGravity()
+    private void ApplyGravity()
     {
-        if(controller.isGrounded && yVelocity < 0f)
+        if (charController.isGrounded && yVelocity < 0f)
         {
             yVelocity = -2f;
         }
-        yVelocity += gravity * Time.deltaTime;
 
-        controller.Move(Vector3.up * yVelocity * Time.deltaTime);
+        yVelocity += gravity * Time.deltaTime;
+        charController.Move(Vector3.up * yVelocity * Time.deltaTime);
     }
 
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IDamageDealer damageDealer = other.GetComponent<IDamageDealer>();
+
+        if (damageDealer != null)
+        {
+            float damageTaken = damageDealer.GetDamage();
+            TakeDamage(damageTaken);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        playerHealth -= (int)damage;
+        Debug.Log("Player Health: " + playerHealth);
+    }
 }

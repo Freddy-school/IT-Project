@@ -1,24 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private string horizontalInputName;
-    [SerializeField] private string verticalInputName;
-    [SerializeField] private float movementSpeed;
+    [Header("Input")]
+    [SerializeField] private string horizontalInputName = "Horizontal";
+    [SerializeField] private string verticalInputName = "Vertical";
+
+    [Header("Movement")]
+    [SerializeField] private float movementSpeed = 6f;
 
     private CharacterController charController;
 
-    //[SerializeField] private AnimationCurve jumpFallOff;
-    //[SerializeField] private float jumpMultiplier;
-    //[SerializeField] private KeyCode jumpKey;
+    [Header("Gravity")]
+    [SerializeField] private float gravity = -9.81f;
+    private float yVelocity;
 
-    [Header("Animations")]
-    [SerializeField] Animation animation_Attack_1;
-
-
-    private bool isJumping;
+    [Header("Player Stats")]
+    [SerializeField] private int playerHealth = 100;
 
     private void Awake()
     {
@@ -27,8 +25,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        PlayerMovement();
-        //Attack1();
+        PlayerMovement();  
+        ApplyGravity();    
     }
 
     private void PlayerMovement()
@@ -39,46 +37,36 @@ public class PlayerMove : MonoBehaviour
         Vector3 forwardMovement = transform.forward * vertInput;
         Vector3 rightMovement = transform.right * horizInput;
 
-        charController.SimpleMove(forwardMovement + rightMovement);
-
-        //JumpInput();
-
+        
+        charController.Move((forwardMovement + rightMovement) * Time.deltaTime);
     }
 
-    /*private void JumpInput()
+    private void ApplyGravity()
     {
-        if(Input.GetKeyDown(jumpKey) && !isJumping)
+        if (charController.isGrounded && yVelocity < 0f)
         {
-            isJumping = true;
-            StartCoroutine(JumpEvent());
-        }
-    }*/
-
-    /*private IEnumerator JumpEvent()
-    {
-        charController.slopeLimit = 90.0f;
-        float timeInAir = 0.0f;
-
-        do
-        {
-            float jumpForce = jumpFallOff.Evaluate(timeInAir);
-            charController.Move(Vector3.up * jumpForce * jumpMultiplier * Time.deltaTime);
-            timeInAir += Time.deltaTime;
-            yield return null;
-        } while (!charController.isGrounded && charController.collisionFlags != CollisionFlags.Above);
-
-        charController.slopeLimit = 45.0f;
-        isJumping = false;
-    }*/
-
-    /*void Attack1()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-
+            yVelocity = -2f;
         }
 
+        yVelocity += gravity * Time.deltaTime;
+        charController.Move(Vector3.up * yVelocity * Time.deltaTime);
+    }
 
-    }*/
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        IDamageDealer damageDealer = other.GetComponent<IDamageDealer>();
 
+        if (damageDealer != null)
+        {
+            float damageTaken = damageDealer.GetDamage();
+            TakeDamage(damageTaken);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        playerHealth -= (int)damage;
+        Debug.Log("Player Health: " + playerHealth);
+    }
 }
