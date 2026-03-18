@@ -20,6 +20,9 @@ public class Player_Controller : MonoBehaviour
 
     [Header("UI")]
     public GameObject deathPanel;
+    public GameObject GameOverlay;
+    public GameObject GameManeger;
+    public UI_Maneger_Script uiManeger;
 
     private bool isDead = false;
 
@@ -33,6 +36,7 @@ public class Player_Controller : MonoBehaviour
     {
         PlayerMovement();
         ApplyGravity();
+        if(Input.GetKeyDown(KeyCode.Escape)) { OpenMenue(); }
     }
 
     private void PlayerMovement()
@@ -100,7 +104,14 @@ public class Player_Controller : MonoBehaviour
         if(deathPanel != null)
         {
             deathPanel.SetActive(true);
+            GameOverlay.SetActive(false);
         }
+    }
+
+    void OpenMenue()
+    {
+        Debug.Log("Test1");
+        uiManeger.OpenOptions();
     }
 
     //temporär jetzt hier später vielleicht bei der ui oder so
