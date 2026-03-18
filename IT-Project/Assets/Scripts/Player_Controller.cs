@@ -21,6 +21,8 @@ public class Player_Controller : MonoBehaviour
     [Header("UI")]
     public GameObject deathPanel;
 
+    private bool isDead = false;
+
     private void Awake()
     {
         charController = GetComponent<CharacterController>();
@@ -81,8 +83,12 @@ public class Player_Controller : MonoBehaviour
 
     void Die()
     {
+        if(isDead) return;
+        isDead = true;
+
         Debug.Log("You Died");
         Time.timeScale = 0f;
+        //GameManager.Instance.GameOver();
         ShowDeathUI();
     }
 
