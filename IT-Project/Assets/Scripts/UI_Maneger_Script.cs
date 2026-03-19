@@ -55,5 +55,14 @@ public class UI_Maneger_Script : MonoBehaviour
 
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+        //Ist nur für test in editor damit es auch da funktioniert, die line dafor sorgt dafür das es in einer build verion geht
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
 
 }
