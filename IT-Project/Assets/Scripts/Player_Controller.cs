@@ -16,7 +16,8 @@ public class Player_Controller : MonoBehaviour
     private float yVelocity;
 
     [Header("Player Stats")]
-    [SerializeField] private int playerHealth = 100;
+    [SerializeField] private Player_Stats player_stats;
+    [SerializeField] private double playerHealth;
 
     [Header("UI")]
     public GameObject deathPanel;
@@ -25,11 +26,13 @@ public class Player_Controller : MonoBehaviour
     public UI_Maneger_Script uiManeger;
 
     private bool isDead = false;
+    
 
     private void Awake()
     {
         charController = GetComponent<CharacterController>();
         Time.timeScale = 1f;
+        playerHealth = player_stats.origin_health;
     }
 
     private void Update()

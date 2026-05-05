@@ -11,6 +11,8 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
     [Header("Atributes")]
     [SerializeField] private float enemyHealth;
     [SerializeField] private float enemyDamage;
+    [SerializeField] private float type;
+    
 
     private void Start()
     {
