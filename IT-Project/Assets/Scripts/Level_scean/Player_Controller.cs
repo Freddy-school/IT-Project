@@ -28,7 +28,7 @@ public class Player_Controller : MonoBehaviour
     private bool isDead = false;
     
 
-    private void Awake()
+    private void Start()
     {
         charController = GetComponent<CharacterController>();
         Time.timeScale = 1f;
