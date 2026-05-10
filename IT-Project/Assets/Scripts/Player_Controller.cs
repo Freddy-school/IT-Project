@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player_Controller : MonoBehaviour
+public class Player_Controller : MonoBehaviour, IDamageable
 {
     [Header("Input")]
     [SerializeField] private string horizontalInputName = "Horizontal";
@@ -18,6 +18,7 @@ public class Player_Controller : MonoBehaviour
     [Header("Player Stats")]
     [SerializeField] private Player_Stats player_stats;
     [SerializeField] private double playerHealth;
+    private EntityType type;
 
     [Header("UI")]
     public GameObject deathPanel;
@@ -33,6 +34,7 @@ public class Player_Controller : MonoBehaviour
         charController = GetComponent<CharacterController>();
         Time.timeScale = 1f;
         playerHealth = player_stats.origin_health;
+        type = player_stats.type;
     }
 
     private void Update()
@@ -85,7 +87,7 @@ public class Player_Controller : MonoBehaviour
     public void TakeDamage(float damage)
     {
         playerHealth -= (int)damage;
-        Debug.Log("Player Health: " + playerHealth);
+        Debug.Log(type + " Health: " + playerHealth);
     }
 
     void Die()
@@ -127,6 +129,10 @@ public class Player_Controller : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+    public void Attack()
+    { 
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2f);
     }
 
 }

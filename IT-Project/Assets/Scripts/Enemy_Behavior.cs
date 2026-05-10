@@ -7,11 +7,12 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
     public GameObject Player_Pos;
     public Vector3 destination;
     public NavMeshAgent agent;
+    public double currentHealth;
 
     [Header("Atributes")]
-    [SerializeField] private float enemyHealth;
+    [SerializeField] protected double enemyHealth;
     [SerializeField] private float enemyDamage;
-    [SerializeField] private float type;
+    [SerializeField] private string type;
     
 
     private void Start()
@@ -20,6 +21,7 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
         Player_Pos = GameObject.Find("Player");
         agent = GetComponent<NavMeshAgent>();
         transform.position = Spawnpoint1.transform.position;
+        currentHealth = enemyHealth;
     }
 
     void Update()
@@ -37,5 +39,11 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
     public float GetDamage()
     {
         return enemyDamage;
+    }
+
+    public void TakeDamage(float damage)
+    {
+       currentHealth -= (int)damage;
+       Debug.Log(type + "Health: " + currentHealth);
     }
 }
