@@ -29,7 +29,7 @@ public class Player_Controller : MonoBehaviour, IDamageable
     private bool isDead = false;
     
 
-    private void Awake()
+    private void Start()
     {
         charController = GetComponent<CharacterController>();
         Time.timeScale = 1f;
