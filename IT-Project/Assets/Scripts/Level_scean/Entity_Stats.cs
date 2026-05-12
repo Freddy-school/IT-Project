@@ -13,4 +13,5 @@ public class Entity_Stats : ScriptableObject
 {
     [SerializeField] public float origin_health;
     [SerializeField] public EntityType type = EntityType.None;
+    [SerializeField] public float damage;
 }

@@ -25,6 +25,13 @@ public class Player_Controller : MonoBehaviour, IDamageable
     [SerializeField] float knockbackDecay = 5f;
     [SerializeField] float KnockbackStrength;
 
+    [Header("Attack")]
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackPointDistance;
+    public float attackRadius;
+    public float damage;
+    public LayerMask enemyLayer;
+
     [Header("UI")]
     public GameObject deathPanel;
     public GameObject GameOverlay;
@@ -32,23 +39,34 @@ public class Player_Controller : MonoBehaviour, IDamageable
     public UI_Maneger_Script uiManeger;
 
     private bool isDead = false;
-    
+
+    private void Awake()
+    {
+        
+        charController = GetComponent<CharacterController>();
+        
+    }
 
     private void Start()
     {
-        charController = GetComponent<CharacterController>();
         Time.timeScale = 1f;
-        playerHealth = player_stats.origin_health;
-        type = player_stats.type;
+
+            playerHealth = player_stats.origin_health;
+            type = player_stats.type;
+            damage = player_stats.damage;
+        attackRadius = 5;
+        attackPointDistance = 2;
+
     }
+
+    
 
     private void Update()
     {
         PlayerMovement();
         ApplyGravity();
-        if(Input.GetKeyDown(KeyCode.Escape)) { OpenMenue(); }
-        if(Input.GetMouseButtonDown(0)) {Attack(); }
-        
+        if (Input.GetKeyDown(KeyCode.Escape)) { OpenMenue(); }
+        if (Input.GetMouseButtonDown(0)) { Attack(); }
     }
 
     private void PlayerMovement()
@@ -58,17 +76,14 @@ public class Player_Controller : MonoBehaviour, IDamageable
 
         Vector3 forwardMovement = transform.forward * vertInput;
         Vector3 rightMovement = transform.right * horizInput;
-
         Vector3 movment = forwardMovement + rightMovement;
 
-        //Knockback intigration
         movment += knockbackVelocity;
 
+        if (charController != null)
+            charController.Move(movment * Time.deltaTime);
 
-        charController.Move(movment * Time.deltaTime);
-
-        //knockback abnehmen
-        knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, knockbackDecay*Time.deltaTime);
+        knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, knockbackDecay * Time.deltaTime);
     }
 
     private void ApplyGravity()
@@ -82,23 +97,17 @@ public class Player_Controller : MonoBehaviour, IDamageable
         charController.Move(Vector3.up * yVelocity * Time.deltaTime);
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         IDamageDealer damageDealer = other.GetComponent<IDamageDealer>();
-
         if (damageDealer != null)
         {
             float damageTaken = damageDealer.GetDamage();
             TakeDamage(damageTaken);
-
             ApplyEnemyKnockback(other.transform, damageTaken);
         }
 
-        if (playerHealth <= 0f)
-        {
-            Die();
-        }
+        if (playerHealth <= 0f) Die();
     }
 
     public void TakeDamage(float damage)
@@ -158,15 +167,54 @@ public class Player_Controller : MonoBehaviour, IDamageable
         if (deathPanel != null)
         {
             deathPanel.SetActive(false);
-
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
+
     public void Attack()
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2f);
-        Debug.Log("Enemy Hit"); 
-    }
+     
 
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position + transform.forward * attackPointDistance, attackRadius, enemyLayer);
+        foreach (Collider enemyCollider in hitEnemies)
+        {
+            Enemy_Behavior enemy = enemyCollider.GetComponent<Enemy_Behavior>();
+            if (enemy != null)
+            {
+                
+                enemy.TakeDamage(damage);
+                ShowAttackSphereDebug(transform.position + transform.forward * attackPointDistance, attackRadius);
+            }
+        }
+    }
+    private void ShowAttackSphereDebug(Vector3 center, float radius, float duration = 0.5f)
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        // Collider entfernen, weil es nur eine Visualisierung sein soll
+        var col = go.GetComponent<Collider>();
+        if (col != null) Destroy(col);
+
+        go.transform.position = center;
+        go.transform.localScale = Vector3.one * radius * 2f;
+
+        var mat = new Material(Shader.Find("Standard"));
+        // stärkere Transparenz: Alpha deutlich reduzieren
+        float alpha = 0.15f; // kleinerer Wert = transparenter
+        mat.color = new Color(1f, 0f, 0f, alpha);
+
+        // Transparent-Setup für Standard-Shader
+        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        mat.SetInt("_ZWrite", 0);
+        mat.DisableKeyword("_ALPHATEST_ON");
+        mat.EnableKeyword("_ALPHABLEND_ON");
+        mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        mat.renderQueue = 3000;
+
+        var rend = go.GetComponent<Renderer>();
+        if (rend != null) rend.sharedMaterial = mat;
+
+        Destroy(go, duration);
+    }
 }

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player_Stats
   origin_health: 100
   type: 1
+  damage: 25

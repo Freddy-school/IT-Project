@@ -60,13 +60,28 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
     public NavMeshAgent agent;
 
     [Header("Stats")]
-    [SerializeField] protected float enemyHealth = 100f;
-    [SerializeField] private float enemyDamage = 10f;
-    [SerializeField] private string type;
+    [SerializeField] protected float enemyHealth;
+    [SerializeField] protected float enemyDamage;
+    [SerializeField] protected EntityType type;
 
     private bool isStunned = false;
 
     private void Start()
+    {
+       
+    }
+
+    private void Update()
+    {
+        
+    }
+
+
+    public float GetDamage()
+    {
+        return enemyDamage;
+    }
+    protected void Awake()
     {
         Spawnpoint1 = GameObject.Find("Spawnpoint1");
         Player_Pos = GameObject.Find("Player");
@@ -79,7 +94,7 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
         agent.updatePosition = true;
     }
 
-    private void Update()
+    protected void FixedUpdate()
     {
         if (Player_Pos == null) return;
 
@@ -89,13 +104,6 @@ public class Enemy_Behavior : MonoBehaviour, IDamageDealer
             agent.SetDestination(destination);
         }
     }
-
-
-    public float GetDamage()
-    {
-        return enemyDamage;
-    }
-
     public void TakeDamage(float damage)
     {
         enemyHealth -= damage;

@@ -10,5 +10,6 @@ public class Player_Stats : Entity_Stats
     {
         type = EntityType.Player; 
         origin_health = 100;
+        damage = 25;
     }
 }
