@@ -20,6 +20,11 @@ public class Player_Controller : MonoBehaviour, IDamageable
     [SerializeField] private float playerHealth;
     private EntityType type;
 
+    [Header("Player Knockback")]
+    [SerializeField] Vector3 knockbackVelocity;
+    [SerializeField] float knockbackDecay = 5f;
+    [SerializeField] float KnockbackStrength;
+
     [Header("UI")]
     public GameObject deathPanel;
     public GameObject GameOverlay;
@@ -42,7 +47,8 @@ public class Player_Controller : MonoBehaviour, IDamageable
         PlayerMovement();
         ApplyGravity();
         if(Input.GetKeyDown(KeyCode.Escape)) { OpenMenue(); }
-        Attack();
+        if(Input.GetMouseButtonDown(0)) {Attack(); }
+        
     }
 
     private void PlayerMovement()
@@ -53,8 +59,16 @@ public class Player_Controller : MonoBehaviour, IDamageable
         Vector3 forwardMovement = transform.forward * vertInput;
         Vector3 rightMovement = transform.right * horizInput;
 
+        Vector3 movment = forwardMovement + rightMovement;
 
-        charController.Move((forwardMovement + rightMovement) * Time.deltaTime);
+        //Knockback intigration
+        movment += knockbackVelocity;
+
+
+        charController.Move(movment * Time.deltaTime);
+
+        //knockback abnehmen
+        knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, knockbackDecay*Time.deltaTime);
     }
 
     private void ApplyGravity()
@@ -77,9 +91,11 @@ public class Player_Controller : MonoBehaviour, IDamageable
         {
             float damageTaken = damageDealer.GetDamage();
             TakeDamage(damageTaken);
+
+            ApplyEnemyKnockback(other.transform, damageTaken);
         }
 
-        if(playerHealth <= 0f)
+        if (playerHealth <= 0f)
         {
             Die();
         }
@@ -87,8 +103,24 @@ public class Player_Controller : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        playerHealth -= (int)damage;
+        
+        playerHealth -= /*(int)*/damage;
         Debug.Log(type + " Health: " + playerHealth);
+
+
+    }
+
+    public void ApplyKnockback(Vector3 direction, float force)
+    {
+        knockbackVelocity = direction.normalized * force;
+    }
+
+    private void ApplyEnemyKnockback(Transform enemy, float damageTaken)
+    {
+        Vector3 direction = (transform.position - enemy.position).normalized;
+
+        KnockbackStrength = damageTaken * 0.3f;
+        ApplyKnockback(direction, KnockbackStrength);
     }
 
     void Die()
@@ -133,12 +165,8 @@ public class Player_Controller : MonoBehaviour, IDamageable
     }
     public void Attack()
     {
-        if (Input.GetMouseButtonDown(0)) 
-        {
-            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2f);
-            Debug.Log("Enemy Hit"); 
-        }
-        
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2f);
+        Debug.Log("Enemy Hit"); 
     }
 
 }
