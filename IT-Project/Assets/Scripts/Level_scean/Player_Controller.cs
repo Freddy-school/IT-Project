@@ -17,7 +17,7 @@ public class Player_Controller : MonoBehaviour, IDamageable
 
     [Header("Player Stats")]
     [SerializeField] private Player_Stats player_stats;
-    [SerializeField] private double playerHealth;
+    [SerializeField] private float playerHealth;
     private EntityType type;
 
     [Header("UI")]
@@ -42,6 +42,7 @@ public class Player_Controller : MonoBehaviour, IDamageable
         PlayerMovement();
         ApplyGravity();
         if(Input.GetKeyDown(KeyCode.Escape)) { OpenMenue(); }
+        Attack();
     }
 
     private void PlayerMovement()
@@ -131,8 +132,13 @@ public class Player_Controller : MonoBehaviour, IDamageable
         }
     }
     public void Attack()
-    { 
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2f);
+    {
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2f);
+            Debug.Log("Enemy Hit"); 
+        }
+        
     }
 
 }

@@ -11,6 +11,6 @@ public enum EntityType
 [CreateAssetMenu(fileName = "Entity_Stats", menuName = "Scriptable Objects/Entity_Stats")]
 public class Entity_Stats : ScriptableObject
 {
-    [SerializeField] public double origin_health;
+    [SerializeField] public float origin_health;
     [SerializeField] public EntityType type = EntityType.None;
 }

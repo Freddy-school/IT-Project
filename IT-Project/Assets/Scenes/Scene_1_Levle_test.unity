@@ -1456,6 +1456,7 @@ MonoBehaviour:
   Player_Pos: {fileID: 0}
   destination: {x: 0, y: 0, z: 0}
   agent: {fileID: 646281434}
+  currentHealth: 0
   enemyHealth: 10
   enemyDamage: 30
   type: 0
@@ -2047,7 +2048,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2086602399}
         m_TargetAssemblyTypeName: UI_Maneger_Script, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2882,7 +2883,7 @@ MonoBehaviour:
   verticalInputName: Vertical
   movementSpeed: 6
   gravity: -9.81
-  player_stats: {fileID: 0}
+  player_stats: {fileID: 11400000, guid: aff01f2a9b487684d891596ca2ec6f1b, type: 2}
   playerHealth: 100
   deathPanel: {fileID: 658499337}
   GameOverlay: {fileID: 698546938}
