@@ -75,8 +75,13 @@ public class HotbarManager : MonoBehaviour
             card.anchoredPosition =
                 new Vector2(xPos, yPos);
 
+
             card.localRotation =
-                Quaternion.Euler(0, 0, angle);
+                Quaternion.Euler(
+                    12f,
+                    0f,
+                    angle);
+
         }
     }
 }

@@ -66,7 +66,8 @@ public class Player_Controller : MonoBehaviour, IDamageable
         PlayerMovement();
         ApplyGravity();
         if (Input.GetKeyDown(KeyCode.Escape)) { OpenMenue(); }
-        if (Input.GetMouseButtonDown(0)) { Attack(); }
+        
+
     }
 
     private void PlayerMovement()
