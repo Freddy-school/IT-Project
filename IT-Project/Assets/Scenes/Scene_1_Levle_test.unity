@@ -1270,6 +1270,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 428854118}
     m_Modifications:
+    - target: {fileID: 7830087143772262729, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
+      propertyPath: m_Color.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 7830087143772262729, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
+      propertyPath: m_Color.b
+      value: 0.1254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 7830087143772262729, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
+      propertyPath: m_Color.g
+      value: 0.1254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 7830087143772262729, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
+      propertyPath: m_Color.r
+      value: 0.1254902
+      objectReference: {fileID: 0}
     - target: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
       propertyPath: m_Name
       value: Card
@@ -1361,6 +1377,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1173603925}
+    - targetCorrespondingSourceObject: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1173603926}
   m_SourcePrefab: {fileID: 100100000, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
 --- !u!1 &557447329
 GameObject:
@@ -2997,13 +3016,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112219295}
+    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112219300}
+    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112219306}
+    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112219307}
   m_SourcePrefab: {fileID: 100100000, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
 --- !u!4 &1112219303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 966482881231152515, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
   m_PrefabInstance: {fileID: 1112219293}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1112219306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112219294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a88c35e2f7b6cdf4d8c4352f49d84b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  enemyLayer:
+    m_Bits: 128
+--- !u!114 &1112219307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112219294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73972529c7c4a84a852b828b832640e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_Attacks
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1169483579
 GameObject:
   m_ObjectHideFlags: 0
@@ -3163,6 +3223,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed057ba63dc49b499d2dedf64c59590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardHover
+--- !u!114 &1173603926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173603919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0.5882353}
+  m_EffectDistance: {x: 8, y: -8}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1173662885
 GameObject:
   m_ObjectHideFlags: 0
@@ -3921,6 +3996,7 @@ GameObject:
   - component: {fileID: 1529007648}
   - component: {fileID: 1529007647}
   - component: {fileID: 1529007649}
+  - component: {fileID: 1529007650}
   m_Layer: 0
   m_Name: HotBarManager
   m_TagString: Untagged
@@ -3943,7 +4019,10 @@ MonoBehaviour:
   cardContainer: {fileID: 428854118}
   cardPrefab: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
   cardsInHand:
-  - {fileID: 11400000, guid: 7b2985ce5596c734baaee6bd8b63823d, type: 2}
+  - {fileID: 11400000, guid: 32bb0d5ef52b5d648acc3462142fb93e, type: 2}
+  - {fileID: 11400000, guid: cc3b3dc4f1810354aa1d5b2fb961f151, type: 2}
+  - {fileID: 11400000, guid: 32bb0d5ef52b5d648acc3462142fb93e, type: 2}
+  - {fileID: 11400000, guid: cc3b3dc4f1810354aa1d5b2fb961f151, type: 2}
   cardSpacing: 150
   fanAngle: 30
   curveHeight: 50
@@ -3982,6 +4061,24 @@ MonoBehaviour:
   loweredY: 50
   raisedY: 160
   animationSpeed: 4
+--- !u!114 &1529007650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529007646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb95bd3fe3bd6ea4f96908de2ccd79c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardSelectionManager
+  cardContainer: {fileID: 428854118}
+  raisedHeight: 40
+  player: {fileID: 1112219300}
+  playerCombat: {fileID: 1112219306}
+  hotBarManager: {fileID: 1529007647}
+  playerAttacks: {fileID: 1112219307}
 --- !u!1 &1564698510
 GameObject:
   m_ObjectHideFlags: 0
