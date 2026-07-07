@@ -445,9 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6d9cb3f7a7f71840943b25468d86b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonGenerator
-  floorMaterial: {fileID: 2100000, guid: c56cd4969e52ec548b51ad37e9ea75cc, type: 2}
-  wallMaterial: {fileID: 2100000, guid: 08a61d465a65f1544a90d1528b6b0fb3, type: 2}
-  ceilingMaterial: {fileID: 2100000, guid: 50bd59a8898d05a4fa3d5dc00af3a920, type: 2}
+  floorPrefab: {fileID: 2359621234723354884, guid: 641cd9e9a4a9d964e8d086e4a05e1017, type: 3}
   topLeft: {fileID: 1195804133}
   topRight: {fileID: 153202539}
   roomCount: 70
@@ -455,13 +453,7 @@ MonoBehaviour:
   maxSize: 10
   padding: 2
   maxAttempts: 50
-  corridorWidth: 4
-  wallHeight: 8
-  ceilingHeight: 8
-  playerPrefab: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-  playerHeight: 1
-  exitPrefab: {fileID: 3962947661582730320, guid: 3406bf57f093e4746a5ceae2360483bb, type: 3}
-  exitRadius: 2
+  corridorWidth: 0.001
 --- !u!4 &1991513018
 Transform:
   m_ObjectHideFlags: 0

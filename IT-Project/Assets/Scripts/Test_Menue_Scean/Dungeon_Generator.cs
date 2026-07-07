@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    [Header("Prefabs")]
-    public GameObject floorPrefab;
+    [Header("Materials")]
+    public Material floorMaterial;
+    public Material wallMaterial;
+    public Material ceilingMaterial;
+
 
     [Header("Bounds")]
     public Transform topLeft;
     public Transform topRight;
+
 
     [Header("Rooms")]
     public int roomCount = 20;
@@ -17,11 +21,36 @@ public class DungeonGenerator : MonoBehaviour
     public float padding = 2f;
     public int maxAttempts = 50;
 
-    [Header("Corridor")]
+
+    [Header("Corridors")]
     public float corridorWidth = 1f;
 
-    private List<Room> rooms = new List<Room>();
-    private List<Edge> mstEdges = new List<Edge>();
+
+    [Header("Dungeon Height")]
+    public float wallHeight = 3f;
+    public float ceilingHeight = 3f;
+
+    [Header("Player")]
+    public GameObject playerPrefab;
+    public float playerHeight = 1f;
+
+
+    [Header("Exit")]
+    public GameObject exitPrefab;
+    public float exitRadius = 2f;
+
+
+    private Room startRoom;
+    private Room endRoom;
+
+
+
+    private List<Room> rooms = new();
+    private List<Edge> mstEdges = new();
+
+    private HashSet<Vector2Int> dungeonTiles = new();
+
+
 
     void Start()
     {
@@ -33,222 +62,248 @@ public class DungeonGenerator : MonoBehaviour
         rooms = GenerateRooms();
 
         List<Edge> edges = BuildFullGraph(rooms);
+
         mstEdges = BuildMST(edges, rooms);
 
         AssignStartAndEnd();
-        List<Room> mainPath = BuildMainPath();
 
         SpawnRooms();
 
-        // normale MST-Verbindungen
-        foreach (var edge in mstEdges)
+        foreach (Edge edge in mstEdges)
         {
             CreateCorridor(edge.a, edge.b);
         }
 
-        // optional: Main Path hervorheben (kann später wichtig werden)
-        foreach (var r in mainPath)
-        {
-            // hier könntest du z.B. besondere Floors setzen
-            // oder Marker spawnen
-        }
-    }
+        CreateFloorMesh();
 
+        CreateWallMesh();
+
+        CreateCeilingMesh();
+
+
+        // NEU
+        SpawnPlayer();
+
+        CreateExit();
+    }
 
     void AssignStartAndEnd()
     {
-        if (rooms.Count < 2) return;
+        if (rooms.Count < 2)
+            return;
 
-        Room start = rooms[Random.Range(0, rooms.Count)];
-        start.type = RoomType.Start;
 
-        Room end = null;
-        float maxDist = 0f;
+        startRoom =
+            rooms[Random.Range(0, rooms.Count)];
 
-        foreach (var r in rooms)
+
+        startRoom.type = RoomType.Start;
+
+
+
+        endRoom = null;
+
+        float maxDistance = 0;
+
+
+
+        foreach (Room r in rooms)
         {
-            if (r == start) continue;
+            if (r == startRoom)
+                continue;
 
-            float d = Vector2.Distance(start.position, r.position);
 
-            if (d > maxDist)
+            float distance =
+                Vector2.Distance(
+                    startRoom.position,
+                    r.position
+                );
+
+
+            if (distance > maxDistance)
             {
-                maxDist = d;
-                end = r;
+                maxDistance = distance;
+                endRoom = r;
             }
         }
 
-        if (end != null)
-            end.type = RoomType.End;
+
+
+        if (endRoom != null)
+            endRoom.type = RoomType.End;
     }
-
-
-    List<Room> BuildMainPath()
-    {
-        Room start = null;
-        Room end = null;
-
-        foreach (var r in rooms)
-        {
-            if (r.type == RoomType.Start) start = r;
-            if (r.type == RoomType.End) end = r;
-        }
-
-        if (start == null || end == null)
-            return new List<Room>();
-
-        Dictionary<Room, Room> cameFrom = new Dictionary<Room, Room>();
-        Queue<Room> queue = new Queue<Room>();
-
-        HashSet<Room> visited = new HashSet<Room>();
-
-        queue.Enqueue(start);
-        visited.Add(start);
-
-        // BFS über MST (stabiler als direkte Distanz)
-        while (queue.Count > 0)
-        {
-            Room current = queue.Dequeue();
-
-            if (current == end)
-                break;
-
-            foreach (var edge in mstEdges)
-            {
-                Room neighbor = null;
-
-                if (edge.a == current) neighbor = edge.b;
-                else if (edge.b == current) neighbor = edge.a;
-
-                if (neighbor != null && !visited.Contains(neighbor))
-                {
-                    visited.Add(neighbor);
-                    cameFrom[neighbor] = current;
-                    queue.Enqueue(neighbor);
-                }
-            }
-        }
-
-        // Pfad rekonstruieren
-        List<Room> path = new List<Room>();
-
-        Room step = end;
-
-        while (step != start)
-        {
-            path.Add(step);
-
-            if (!cameFrom.ContainsKey(step))
-                break;
-
-            step = cameFrom[step];
-        }
-
-        path.Add(start);
-        path.Reverse();
-
-        return path;
-    }
-
 
     List<Room> GenerateRooms()
     {
-        List<Room> result = new List<Room>();
+        List<Room> result = new();
+
+
 
         float xMin = topLeft.position.x;
         float xMax = topRight.position.x;
-        float zMin = topLeft.position.z;
-        float zMax = topRight.position.z;
+
+
+        float zMin = topRight.position.z;
+        float zMax = topLeft.position.z;
+
+
+
 
         for (int i = 0; i < roomCount; i++)
         {
             bool placed = false;
+
             int attempts = 0;
+
+
 
             while (!placed && attempts < maxAttempts)
             {
                 attempts++;
+
+
 
                 Vector2 size = new Vector2(
                     Random.Range(minSize, maxSize),
                     Random.Range(minSize, maxSize)
                 );
 
-                Vector2 pos = new Vector2(
+
+
+                Vector2 position = new Vector2(
                     Random.Range(xMin, xMax),
                     Random.Range(zMin, zMax)
                 );
 
-                Room newRoom = new Room(pos, size);
 
-                if (IsValid(newRoom, result))
+
+                Room room =
+                    new Room(position, size);
+
+
+
+                if (IsValid(room, result))
                 {
-                    result.Add(newRoom);
+                    result.Add(room);
                     placed = true;
                 }
             }
         }
+
 
         return result;
     }
 
     bool IsValid(Room room, List<Room> others)
     {
-        foreach (var r in others)
+        foreach (Room r in others)
         {
-            float dx = Mathf.Abs(room.position.x - r.position.x);
-            float dz = Mathf.Abs(room.position.y - r.position.y);
+            float dx =
+                Mathf.Abs(
+                    room.position.x -
+                    r.position.x
+                );
 
-            float minX = (room.size.x + r.size.x) * 0.5f + padding;
-            float minZ = (room.size.y + r.size.y) * 0.5f + padding;
+
+            float dz =
+                Mathf.Abs(
+                    room.position.y -
+                    r.position.y
+                );
+
+
+
+            float minX =
+                (room.size.x + r.size.x)
+                * 0.5f
+                + padding;
+
+
+
+            float minZ =
+                (room.size.y + r.size.y)
+                * 0.5f
+                + padding;
+
+
 
             if (dx < minX && dz < minZ)
                 return false;
         }
 
+
+
         return true;
     }
 
-
     List<Edge> BuildFullGraph(List<Room> rooms)
     {
-        List<Edge> edges = new List<Edge>();
+        List<Edge> edges = new();
+
+
 
         for (int i = 0; i < rooms.Count; i++)
         {
             for (int j = i + 1; j < rooms.Count; j++)
             {
-                edges.Add(new Edge(rooms[i], rooms[j]));
+                edges.Add(
+                    new Edge(
+                        rooms[i],
+                        rooms[j]
+                    )
+                );
             }
         }
+
+
 
         return edges;
     }
 
-    List<Edge> BuildMST(List<Edge> edges, List<Room> rooms)
+    List<Edge> BuildMST(
+        List<Edge> edges,
+        List<Room> rooms)
     {
-        edges.Sort((a, b) => a.length.CompareTo(b.length));
 
-        Dictionary<Room, Room> parent = new Dictionary<Room, Room>();
+        edges.Sort(
+            (a, b) =>
+            a.length.CompareTo(b.length)
+        );
 
-        foreach (var r in rooms)
+
+
+        Dictionary<Room, Room> parent =
+            new();
+
+
+
+        foreach (Room r in rooms)
             parent[r] = r;
+
+
 
         Room Find(Room r)
         {
             if (parent[r] != r)
                 parent[r] = Find(parent[r]);
+
             return parent[r];
         }
+
+
 
         void Union(Room a, Room b)
         {
             parent[Find(a)] = Find(b);
         }
 
-        List<Edge> result = new List<Edge>();
 
-        foreach (var e in edges)
+
+        List<Edge> result = new();
+
+
+
+        foreach (Edge e in edges)
         {
             if (Find(e.a) != Find(e.b))
             {
@@ -257,59 +312,511 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
+
+
         return result;
     }
 
-
     void SpawnRooms()
     {
-        foreach (var r in rooms)
+        foreach (Room r in rooms)
         {
-            GameObject obj = Instantiate(
-                floorPrefab,
-                new Vector3(r.position.x, 0, r.position.y),
-                Quaternion.identity
-            );
+            int startX =
+                Mathf.RoundToInt(
+                    r.position.x - r.size.x / 2
+                );
 
-            obj.transform.localScale = new Vector3(r.size.x, 1, r.size.y);
-        }
-    }
 
-    void CreateCorridor(Room a, Room b)
-    {
-        Vector2 current = a.position;
+            int startZ =
+                Mathf.RoundToInt(
+                    r.position.y - r.size.y / 2
+                );
 
-        while (Vector2.Distance(current, b.position) > 1f)
-        {
-            current = Vector2.MoveTowards(current, b.position, 1f);
 
-            CarveCorridor(current);
-        }
-    }
 
-    void CarveCorridor(Vector2 pos)
-    {
-        int w = Mathf.RoundToInt(corridorWidth);
+            int width =
+                Mathf.RoundToInt(r.size.x);
 
-        for (int x = -w; x <= w; x++)
-        {
-            for (int y = -w; y <= w; y++)
+
+            int height =
+                Mathf.RoundToInt(r.size.y);
+
+
+
+
+            for (int x = 0; x < width; x++)
             {
-                Vector2 offset = new Vector2(x, y);
-
-                if (offset.magnitude <= corridorWidth)
+                for (int z = 0; z < height; z++)
                 {
-                    Instantiate(
-                        floorPrefab,
-                        new Vector3(pos.x + offset.x, 0, pos.y + offset.y),
-                        Quaternion.identity
+                    dungeonTiles.Add(
+                        new Vector2Int(
+                            startX + x,
+                            startZ + z
+                        )
                     );
                 }
             }
         }
     }
 
+    void CreateCorridor(Room a, Room b)
+    {
+        Vector2Int current = new Vector2Int(
+            Mathf.RoundToInt(a.position.x),
+            Mathf.RoundToInt(a.position.y)
+        );
 
+
+        Vector2Int target = new Vector2Int(
+            Mathf.RoundToInt(b.position.x),
+            Mathf.RoundToInt(b.position.y)
+        );
+
+
+
+        bool horizontalFirst = Random.value > 0.5f;
+
+
+
+        if (horizontalFirst)
+        {
+            while (current.x != target.x)
+            {
+                current.x +=
+                    current.x < target.x ? 1 : -1;
+
+                CarveCorridor(current);
+            }
+
+
+
+            while (current.y != target.y)
+            {
+                current.y +=
+                    current.y < target.y ? 1 : -1;
+
+                CarveCorridor(current);
+            }
+        }
+
+        else
+        {
+            while (current.y != target.y)
+            {
+                current.y +=
+                    current.y < target.y ? 1 : -1;
+
+                CarveCorridor(current);
+            }
+
+
+
+            while (current.x != target.x)
+            {
+                current.x +=
+                    current.x < target.x ? 1 : -1;
+
+                CarveCorridor(current);
+            }
+        }
+    }
+
+    void CarveCorridor(Vector2Int pos)
+    {
+        int width =
+            Mathf.RoundToInt(corridorWidth);
+
+
+
+        for (int x = -width; x <= width; x++)
+        {
+            for (int z = -width; z <= width; z++)
+            {
+                dungeonTiles.Add(
+                    new Vector2Int(
+                        pos.x + x,
+                        pos.y + z
+                    )
+                );
+            }
+        }
+    }
+
+    void CreateFloorMesh()
+    {
+        List<Vector3> vertices = new();
+        List<int> triangles = new();
+
+
+
+        foreach (Vector2Int tile in dungeonTiles)
+        {
+            int index = vertices.Count;
+
+
+
+            vertices.Add(
+                new Vector3(tile.x, 0, tile.y)
+            );
+
+            vertices.Add(
+                new Vector3(tile.x + 1, 0, tile.y)
+            );
+
+            vertices.Add(
+                new Vector3(tile.x + 1, 0, tile.y + 1)
+            );
+
+            vertices.Add(
+                new Vector3(tile.x, 0, tile.y + 1)
+            );
+
+
+
+            triangles.Add(index);
+            triangles.Add(index + 2);
+            triangles.Add(index + 1);
+
+
+            triangles.Add(index);
+            triangles.Add(index + 3);
+            triangles.Add(index + 2);
+        }
+
+
+
+        CreateMeshObject(
+            "Dungeon Floor",
+            vertices,
+            triangles,
+            floorMaterial
+        );
+    }
+
+    void CreateWallMesh()
+    {
+        List<Vector3> vertices = new();
+        List<int> triangles = new();
+
+
+
+        Vector2Int[] directions =
+        {
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left,
+            Vector2Int.right
+        };
+
+
+
+        foreach (Vector2Int tile in dungeonTiles)
+        {
+            foreach (Vector2Int dir in directions)
+            {
+                Vector2Int neighbour =
+                    tile + dir;
+
+
+
+                if (!dungeonTiles.Contains(neighbour))
+                {
+                    AddWall(
+                        tile,
+                        dir,
+                        vertices,
+                        triangles
+                    );
+                }
+            }
+        }
+
+
+
+        CreateMeshObject(
+            "Dungeon Walls",
+            vertices,
+            triangles,
+            wallMaterial
+        );
+    }
+
+    void AddWall(
+        Vector2Int tile,
+        Vector2Int dir,
+        List<Vector3> vertices,
+        List<int> triangles)
+    {
+
+        int index = vertices.Count;
+
+
+
+        float x = tile.x;
+        float z = tile.y;
+
+
+
+        if (dir == Vector2Int.up)
+        {
+            vertices.Add(
+                new Vector3(x, 0, z + 1)
+            );
+
+            vertices.Add(
+                new Vector3(x + 1, 0, z + 1)
+            );
+
+            vertices.Add(
+                new Vector3(x + 1, wallHeight, z + 1)
+            );
+
+            vertices.Add(
+                new Vector3(x, wallHeight, z + 1)
+            );
+        }
+
+
+
+
+        if (dir == Vector2Int.down)
+        {
+            vertices.Add(
+                new Vector3(x + 1, 0, z)
+            );
+
+            vertices.Add(
+                new Vector3(x, 0, z)
+            );
+
+            vertices.Add(
+                new Vector3(x, wallHeight, z)
+            );
+
+            vertices.Add(
+                new Vector3(x + 1, wallHeight, z)
+            );
+        }
+
+
+
+
+        if (dir == Vector2Int.right)
+        {
+            vertices.Add(
+                new Vector3(x + 1, 0, z + 1)
+            );
+
+            vertices.Add(
+                new Vector3(x + 1, 0, z)
+            );
+
+            vertices.Add(
+                new Vector3(x + 1, wallHeight, z)
+            );
+
+            vertices.Add(
+                new Vector3(x + 1, wallHeight, z + 1)
+            );
+        }
+
+
+
+
+        if (dir == Vector2Int.left)
+        {
+            vertices.Add(
+                new Vector3(x, 0, z)
+            );
+
+            vertices.Add(
+                new Vector3(x, 0, z + 1)
+            );
+
+            vertices.Add(
+                new Vector3(x, wallHeight, z + 1)
+            );
+
+            vertices.Add(
+                new Vector3(x, wallHeight, z)
+            );
+        }
+
+
+
+        triangles.Add(index);
+        triangles.Add(index + 2);
+        triangles.Add(index + 1);
+
+
+        triangles.Add(index);
+        triangles.Add(index + 3);
+        triangles.Add(index + 2);
+    }
+
+    void CreateCeilingMesh()
+    {
+        List<Vector3> vertices = new();
+        List<int> triangles = new();
+
+
+
+        foreach (Vector2Int tile in dungeonTiles)
+        {
+            int index = vertices.Count;
+
+
+
+            vertices.Add(
+                new Vector3(
+                    tile.x,
+                    ceilingHeight,
+                    tile.y
+                )
+            );
+
+
+            vertices.Add(
+                new Vector3(
+                    tile.x,
+                    ceilingHeight,
+                    tile.y + 1
+                )
+            );
+
+
+            vertices.Add(
+                new Vector3(
+                    tile.x + 1,
+                    ceilingHeight,
+                    tile.y + 1
+                )
+            );
+
+
+            vertices.Add(
+                new Vector3(
+                    tile.x + 1,
+                    ceilingHeight,
+                    tile.y
+                )
+            );
+
+
+
+            // Richtung nach unten
+            triangles.Add(index);
+            triangles.Add(index + 2);
+            triangles.Add(index + 1);
+
+
+            triangles.Add(index);
+            triangles.Add(index + 3);
+            triangles.Add(index + 2);
+        }
+
+
+
+        CreateMeshObject(
+            "Dungeon Ceiling",
+            vertices,
+            triangles,
+            ceilingMaterial
+        );
+    }
+
+    void SpawnPlayer()
+    {
+        if (playerPrefab == null || startRoom == null)
+            return;
+
+
+        Vector3 spawnPosition =
+            new Vector3(
+                startRoom.position.x,
+                playerHeight,
+                startRoom.position.y
+            );
+
+
+        Instantiate(
+            playerPrefab,
+            spawnPosition,
+            Quaternion.identity
+        );
+    }
+
+    void CreateExit()
+    {
+        if (exitPrefab == null || endRoom == null)
+            return;
+
+
+
+        Vector3 position =
+            new Vector3(
+                endRoom.position.x,
+                0.05f,
+                endRoom.position.y
+            );
+
+
+
+        GameObject exit =
+            Instantiate(
+                exitPrefab,
+                position,
+                Quaternion.identity
+            );
+
+
+        exit.name = "Dungeon Exit";
+    }
+
+    void CreateMeshObject(
+    string name,
+    List<Vector3> vertices,
+    List<int> triangles,
+    Material material)
+    {
+        Mesh mesh = new Mesh();
+
+        mesh.name = name;
+
+        mesh.vertices = vertices.ToArray();
+        mesh.triangles = triangles.ToArray();
+
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+
+        GameObject obj = new GameObject(name);
+
+
+        MeshFilter filter =
+            obj.AddComponent<MeshFilter>();
+
+
+        MeshRenderer renderer =
+            obj.AddComponent<MeshRenderer>();
+
+
+        filter.mesh = mesh;
+
+
+        renderer.material = material;
+
+
+
+        // NUR für Boden Collider hinzufügen
+        if (name == "Dungeon Floor")
+        {
+            MeshCollider collider =
+                obj.AddComponent<MeshCollider>();
+
+            collider.sharedMesh = mesh;
+        }
+    }
     public enum RoomType
     {
         Normal,
@@ -321,12 +828,18 @@ public class DungeonGenerator : MonoBehaviour
     {
         public Vector2 position;
         public Vector2 size;
-        public RoomType type = RoomType.Normal;
 
-        public Room(Vector2 p, Vector2 s)
+        public RoomType type =
+            RoomType.Normal;
+
+
+
+        public Room(
+            Vector2 position,
+            Vector2 size)
         {
-            position = p;
-            size = s;
+            this.position = position;
+            this.size = size;
         }
     }
 
@@ -334,13 +847,24 @@ public class DungeonGenerator : MonoBehaviour
     {
         public Room a;
         public Room b;
+
         public float length;
 
-        public Edge(Room a, Room b)
+
+
+        public Edge(
+            Room a,
+            Room b)
         {
             this.a = a;
             this.b = b;
-            this.length = Vector2.Distance(a.position, b.position);
+
+
+            length =
+                Vector2.Distance(
+                    a.position,
+                    b.position
+                );
         }
     }
 }

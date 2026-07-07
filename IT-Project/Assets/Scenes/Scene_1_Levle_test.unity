@@ -823,11 +823,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 314797581}
   m_CullTransparentMesh: 1
---- !u!4 &320629400 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-  m_PrefabInstance: {fileID: 1112219293}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &324885032
 GameObject:
   m_ObjectHideFlags: 0
@@ -2979,132 +2974,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_TagString
-      value: Charakter_Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2134806311782008498, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2134806311782008498, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: cameraTransform
+    - target: {fileID: 3789609776130577599, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      propertyPath: uiManeger
       value: 
-      objectReference: {fileID: 320629400}
-    - target: {fileID: 5823621643998095460, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.9700003
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.981186
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.1930651
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6606617484441261192, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 22.263
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620568734799004252, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      objectReference: {fileID: 2086602399}
+    - target: {fileID: 3789609776130577599, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      propertyPath: deathPanel
       value: 
-      objectReference: {fileID: 2100000, guid: 4a14c570a61a93347bfcb326f1bfaf7c, type: 2}
-    - target: {fileID: 8815205889464816240, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 658499337}
+    - target: {fileID: 3789609776130577599, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      propertyPath: GameManeger
+      value: 
+      objectReference: {fileID: 2086602398}
+    - target: {fileID: 3789609776130577599, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      propertyPath: GameOverlay
+      value: 
+      objectReference: {fileID: 698546938}
+    - target: {fileID: 3789609776130577599, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      propertyPath: attackPoint
+      value: 
+      objectReference: {fileID: 1173662886}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1112219295}
-    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1112219300}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
---- !u!1 &1112219294 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
-  m_PrefabInstance: {fileID: 1112219293}
-  m_PrefabAsset: {fileID: 0}
---- !u!195 &1112219295
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112219294}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!114 &1112219300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112219294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab265ac60f0f4224bbfbd7649cd83b4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
-  horizontalInputName: Horizontal
-  verticalInputName: Vertical
-  movementSpeed: 6
-  gravity: -9.81
-  player_stats: {fileID: 11400000, guid: 8ca2272bcc0f1324688c9456dd01c43d, type: 2}
-  playerHealth: 100
-  knockbackVelocity: {x: 0, y: 0, z: 0}
-  knockbackDecay: 5
-  KnockbackStrength: 5
-  attackPoint: {fileID: 1173662886}
-  attackPointDistance: 0.05
-  attackRadius: 900
-  damage: 20
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  deathPanel: {fileID: 658499337}
-  GameOverlay: {fileID: 698546938}
-  GameManeger: {fileID: 2086602398}
-  uiManeger: {fileID: 2086602399}
 --- !u!4 &1112219303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 966482881231152515, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}

@@ -32,4 +32,9 @@ public class Level_Ui_Maneger_Script : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void OpenDungeon()
+    {
+        SceneManager.LoadScene(3);
+    }
 }

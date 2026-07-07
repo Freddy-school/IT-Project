@@ -14,5 +14,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene_1_Levle_test.unity
     guid: 2890f7b165ecad1449dd4edf24144a69
+  - enabled: 1
+    path: Assets/Scenes/Procederal_Generation_Test_Scean.unity
+    guid: 82bc336d34709994eb2945ebb1078ae8
+  - enabled: 1
+    path: Assets/Scenes/Menue_Inventory_Scean.unity
+    guid: 681744e7b19116947a063ef9e4324ad7
+  - enabled: 1
+    path: Assets/Scenes/Save_Stats.unity
+    guid: 6231f31e0694d144e9b8e71ad386676a
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
