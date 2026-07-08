@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -39,6 +40,14 @@ public class DungeonGenerator : MonoBehaviour
     public GameObject exitPrefab;
     public float exitRadius = 2f;
 
+    [Header("Enemies")]
+    public GameObject[] enemyPrefabs;
+    public int enemyCount = 10;
+
+    public float enemySpawnHeight = 2f;
+
+    public NavMeshSurface navMeshSurface;
+
 
     private Room startRoom;
     private Room endRoom;
@@ -75,16 +84,12 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         CreateFloorMesh();
-
         CreateWallMesh();
-
         CreateCeilingMesh();
-
-
-        // NEU
+        BakeNavMesh();
         SpawnPlayer();
-
         CreateExit();
+        SpawnEnemies();
     }
 
     void AssignStartAndEnd()
@@ -131,6 +136,116 @@ public class DungeonGenerator : MonoBehaviour
 
         if (endRoom != null)
             endRoom.type = RoomType.End;
+    }
+
+    void BakeNavMesh()
+    {
+        if(navMeshSurface == null)
+        {
+            Debug.Log("Kein NavMesh GEsetzt");
+            return;
+        }
+
+        navMeshSurface.BuildNavMesh();
+    }
+
+    void SpawnEnemies()
+    {
+        if (enemyPrefabs.Length == 0)
+            return;
+
+
+        List<Vector2Int> possiblePositions =
+            new List<Vector2Int>(dungeonTiles);
+
+
+
+        // Start und Endbereich entfernen
+        foreach (Room room in rooms)
+        {
+            if (room.type == RoomType.Start ||
+               room.type == RoomType.End)
+            {
+                int startX =
+                    Mathf.RoundToInt(
+                        room.position.x - room.size.x / 2
+                    );
+
+                int startZ =
+                    Mathf.RoundToInt(
+                        room.position.y - room.size.y / 2
+                    );
+
+
+                int width =
+                    Mathf.RoundToInt(room.size.x);
+
+                int height =
+                    Mathf.RoundToInt(room.size.y);
+
+
+
+                for (int x = 0; x < width; x++)
+                {
+                    for (int z = 0; z < height; z++)
+                    {
+                        possiblePositions.Remove(
+                            new Vector2Int(
+                                startX + x,
+                                startZ + z
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
+
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            if (possiblePositions.Count == 0)
+                break;
+
+
+
+            int index =
+                Random.Range(
+                    0,
+                    possiblePositions.Count
+                );
+
+
+
+            Vector2Int position =
+                possiblePositions[index];
+
+
+
+            possiblePositions.RemoveAt(index);
+
+
+
+            GameObject enemy =
+                enemyPrefabs[
+                    Random.Range(
+                        0,
+                        enemyPrefabs.Length
+                    )
+                ];
+
+
+
+            Instantiate(
+                enemy,
+                new Vector3(
+                    position.x,
+                    enemySpawnHeight,
+                    position.y
+                ),
+                Quaternion.identity
+            );
+        }
     }
 
     List<Room> GenerateRooms()
@@ -796,20 +911,19 @@ public class DungeonGenerator : MonoBehaviour
         MeshFilter filter =
             obj.AddComponent<MeshFilter>();
 
-
         MeshRenderer renderer =
             obj.AddComponent<MeshRenderer>();
 
 
         filter.mesh = mesh;
 
-
         renderer.material = material;
 
 
 
-        // NUR für Boden Collider hinzufügen
-        if (name == "Dungeon Floor")
+        
+        if (name == "Dungeon Floor" ||
+           name == "Dungeon Walls")
         {
             MeshCollider collider =
                 obj.AddComponent<MeshCollider>();
@@ -817,6 +931,7 @@ public class DungeonGenerator : MonoBehaviour
             collider.sharedMesh = mesh;
         }
     }
+
     public enum RoomType
     {
         Normal,
