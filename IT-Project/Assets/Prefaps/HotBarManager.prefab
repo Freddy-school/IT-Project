@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7654742789460448003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2081026535179171186}
+  - component: {fileID: 1724305590889636601}
+  - component: {fileID: 221053885873839587}
+  - component: {fileID: 9194380453450780910}
+  m_Layer: 0
+  m_Name: HotBarManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2081026535179171186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7654742789460448003}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.64, y: -0.45, z: 3.77227}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1724305590889636601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7654742789460448003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d135d883e86300740b4660eb83352697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HotbarManager
+  cardContainer: {fileID: 0}
+  cardPrefab: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
+  cardsInHand:
+  - {fileID: 11400000, guid: 32bb0d5ef52b5d648acc3462142fb93e, type: 2}
+  - {fileID: 11400000, guid: cc3b3dc4f1810354aa1d5b2fb961f151, type: 2}
+  cardSpacing: 150
+  fanAngle: 30
+  curveHeight: 50
+--- !u!114 &221053885873839587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7654742789460448003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fca0bd43a2c36d04b8126f309b668624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HandFocusManager
+  player: {fileID: 0}
+  cardContainer: {fileID: 0}
+  idleTimeRequired: 3
+  smallScale: 0.75
+  largeScale: 1.15
+  loweredY: 50
+  raisedY: 160
+  animationSpeed: 4
+--- !u!114 &9194380453450780910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7654742789460448003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb95bd3fe3bd6ea4f96908de2ccd79c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardSelectionManager
+  cardContainer: {fileID: 0}
+  raisedHeight: 40
+  player: {fileID: 0}
+  playerCombat: {fileID: 0}
+  hotbarManager: {fileID: 1724305590889636601}
+  playerAttacks: {fileID: 0}
