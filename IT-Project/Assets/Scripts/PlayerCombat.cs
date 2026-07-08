@@ -46,6 +46,10 @@ public class PlayerCombat : MonoBehaviour
 
     protected bool CheckSingleTarget(float range)
     {
+
+        Debug.Log("CheckSingleTarget wird ausgeführt");
+        Debug.Log("Range: " + range);
+
         Vector3 center =
             transform.position +
             transform.forward * (range * 0.5f);
@@ -56,12 +60,14 @@ public class PlayerCombat : MonoBehaviour
                 1f,
                 range * 0.5f);
 
+
         Collider[] hits =
             Physics.OverlapBox(
                 center,
                 halfExtents,
                 transform.rotation,
                 enemyLayer);
+        Debug.Log("Hits: " + hits.Length);
 
         return hits.Length > 0;
     }
@@ -130,7 +136,7 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private void AreaAttack(CardData card)
+    protected void AreaAttack(CardData card)
     {
         Collider[] hits =
             Physics.OverlapSphere(

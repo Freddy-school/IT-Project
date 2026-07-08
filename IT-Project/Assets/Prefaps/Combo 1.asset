@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6804bf9c71184804c8b8dc5298351fd4, type: 3}
   m_Name: Combo 1
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Combo 1
+  cardName: Combo1
   damage: 20
   range: 1
   attackType: 0

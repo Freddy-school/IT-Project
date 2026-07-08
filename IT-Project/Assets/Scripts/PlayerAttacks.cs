@@ -1,19 +1,40 @@
+using System.Reflection;
 using UnityEngine;
-public class Player_Attacks : PlayerCombat
+
+public class PlayerAttacks : PlayerCombat
 {
+    public void PlayAttack(CardData card)
+    {
+        MethodInfo attackMethod =
+            GetType().GetMethod(
+                card.cardName,
+                BindingFlags.Public |
+                BindingFlags.Instance);
+
+        if (attackMethod == null)
+        {
+            Debug.LogWarning(
+                $"Keine Methode für {card.cardName} gefunden.");
+            return;
+        }
+
+        attackMethod.Invoke(
+            this,
+            new object[] { card });
+    }
+
 
     public void Combo1(CardData card)
     {
         Debug.Log("Combo1 gestartet");
+        Debug.Log(card.range);
 
-        bool canAttack = CheckAttack(card);
+        bool result = CheckAttack(card);
 
-        Debug.Log("CheckAttack: " + canAttack);
+        Debug.Log("CheckAttack: " + result);
 
-        if (!canAttack)
+        if (!result)
             return;
-
-        Debug.Log("Greife an");
 
         Attack(card);
     }
@@ -21,10 +42,10 @@ public class Player_Attacks : PlayerCombat
 
     public void Combo2(CardData card)
     {
+        Debug.Log("Combo2");
+
         if (!CheckAttack(card))
             return;
-
-        Debug.Log("Combo2");
 
         // andere Animation
 

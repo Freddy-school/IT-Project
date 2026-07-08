@@ -604,6 +604,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &263196511 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+  m_PrefabInstance: {fileID: 1112219293}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &305305338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5203060610447926391, guid: 270b6e4960a94bc438afe792e666ae5e, type: 3}
@@ -1374,9 +1379,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1173603925}
     - targetCorrespondingSourceObject: {fileID: 8020248512881279102, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1173603926}
@@ -2830,13 +2832,60 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112219309}
+    - targetCorrespondingSourceObject: {fileID: 1760491779925493380, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112219308}
   m_SourcePrefab: {fileID: 100100000, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
 --- !u!4 &1112219303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 966482881231152515, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
   m_PrefabInstance: {fileID: 1112219293}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1112219304 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3789609776130577599, guid: 4e4a84e9748ffe545b3ae6a63e6587f4, type: 3}
+  m_PrefabInstance: {fileID: 1112219293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263196511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab265ac60f0f4224bbfbd7649cd83b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
+--- !u!114 &1112219308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263196511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73972529c7c4a84a852b828b832640e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttacks
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &1112219309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263196511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f34a9a02e0fd434cad578f9d39489f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1169483579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2984,18 +3033,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8275395092761373195, guid: cdb55801c168b2b4f9225eba7322fe06, type: 3}
   m_PrefabInstance: {fileID: 504671258}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1173603925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173603919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ed057ba63dc49b499d2dedf64c59590, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CardHover
 --- !u!114 &1173603926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3794,8 +3831,6 @@ MonoBehaviour:
   cardsInHand:
   - {fileID: 11400000, guid: 32bb0d5ef52b5d648acc3462142fb93e, type: 2}
   - {fileID: 11400000, guid: cc3b3dc4f1810354aa1d5b2fb961f151, type: 2}
-  - {fileID: 11400000, guid: 32bb0d5ef52b5d648acc3462142fb93e, type: 2}
-  - {fileID: 11400000, guid: cc3b3dc4f1810354aa1d5b2fb961f151, type: 2}
   cardSpacing: 150
   fanAngle: 30
   curveHeight: 50
@@ -3848,10 +3883,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardSelectionManager
   cardContainer: {fileID: 428854118}
   raisedHeight: 40
-  player: {fileID: 0}
-  playerCombat: {fileID: 0}
-  hotBarManager: {fileID: 1529007647}
-  playerAttacks: {fileID: 0}
+  player: {fileID: 1112219304}
+  playerCombat: {fileID: 1112219309}
+  hotbarManager: {fileID: 1529007647}
+  playerAttacks: {fileID: 1112219308}
 --- !u!1 &1564698510
 GameObject:
   m_ObjectHideFlags: 0

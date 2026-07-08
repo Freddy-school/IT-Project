@@ -12,9 +12,9 @@ public class CardSelectionManager : MonoBehaviour
 
     public PlayerCombat playerCombat;
     
-    public HotbarManager hotBarManager;
+    public HotbarManager hotbarManager;
 
-    public Player_Attacks playerAttacks;
+    public PlayerAttacks playerAttacks;
 
 
     private void Update()
@@ -79,29 +79,21 @@ public class CardSelectionManager : MonoBehaviour
     }
 
 
+
     private void PlaySelectedCard()
     {
         if (selectedIndex < 0)
             return;
 
+        if (selectedIndex >= hotbarManager.cardsInHand.Count)
+            return;
+
         CardData selectedCard =
-            hotBarManager.cardsInHand[selectedIndex];
-        Debug.Log(selectedCard.cardName);
+            hotbarManager.cardsInHand[selectedIndex];
 
-        string attackName =
-            selectedCard.cardName;
-
-        switch (attackName)
-        {
-            case "Combo1":
-                playerAttacks.Combo1(selectedCard);
-                break;
-
-            case "Combo2":
-                playerAttacks.Combo2(selectedCard);
-                break;
-        }
+        playerAttacks.PlayAttack(selectedCard);
     }
+
 
 
 }
