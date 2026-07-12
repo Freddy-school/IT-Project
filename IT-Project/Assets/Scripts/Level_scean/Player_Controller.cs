@@ -37,6 +37,7 @@ public class Player_Controller : MonoBehaviour, IDamageable
     public GameObject GameOverlay;
     public GameObject GameManeger;
     public UI_Maneger_Script uiManeger;
+    //[SerializeField] private HealthBar_UI healthbar;
 
     private bool isDead = false;
 
@@ -56,7 +57,14 @@ public class Player_Controller : MonoBehaviour, IDamageable
             damage = player_stats.damage;
         attackRadius = 5;
         attackPointDistance = 2;
+        //healthbar.SetMaxHealth(playerHealth);
 
+
+    }
+
+    public float ReturnHealth()
+    {
+        return playerHealth;
     }
 
     
@@ -155,6 +163,8 @@ public class Player_Controller : MonoBehaviour, IDamageable
             GameOverlay.SetActive(false);
         }
     }
+
+    
 
     void OpenMenue()
     {
