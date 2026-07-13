@@ -7,6 +7,8 @@ public class Enemy1_Behavior : Enemy_Behavior
     [SerializeField]
     private Enemy1_Stats enemy1_stats;
 
+    [SerializeField] Animator animator;
+
 
 
     protected override void Awake()
@@ -35,5 +37,17 @@ public class Enemy1_Behavior : Enemy_Behavior
 
         type =
             enemy1_stats.type;
+    }
+
+    private void Update()
+    {
+        if ( agent.velocity.magnitude >= 0.1f)
+        {
+            animator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+        }
     }
 }
